@@ -1,0 +1,7 @@
+---
+- hosts: kafka_servers 
+  user: root
+  roles:
+    - java
+    - zookeeper
+    - kafka

@@ -1,0 +1,78 @@
+- name: disable firewalld
+  service: name=firewalld state=stopped enabled=no
+  ignore_errors: True
+  tags: 
+    - zookeeper 
+    - zk_setup
+
+- name: create zookeeper group 
+  user: name=zookeeper state=present 
+  tags: 
+    - zookeeper 
+    - zk_setup
+ 
+- name: create zookeeper user
+  user: name=zookeeper group=zookeeper
+  tags: 
+    - zookeeper 
+    - zk_setup
+  
+- set_fact:
+    zk_package_name: zookeeper-{{ zookeeper.version }}.tar.gz
+    zk_application_path: "{{ zookeeper.installation_path }}/zookeeper-{{ zookeeper.version }}"
+  tags: 
+    - zookeeper 
+    - zk_installation
+
+- name: check zookeeper package
+  stat: path={{ package_download_path }}/{{ zk_package_name }}
+  register: zk_package_exists
+  tags:
+    - zookeeper
+    - zk_installation
+
+- name: download zookeeper tar if not downloaded
+  get_url: url={{ zookeeper.download_mirror }}/zookeeper-{{ zookeeper.version }}/{{ zk_package_name }} dest={{ package_download_path }}
+  when: not zk_package_exists.stat.exists 
+  tags: 
+    - zookeeper
+    - zk_installation
+
+- name: unarchive zookeeper package
+  unarchive: src={{ package_download_path }}/{{ zk_package_name }} dest={{ zookeeper.installation_path }} copy=no 
+  tags: 
+    - zookeeper
+    - zk_installation
+
+- name: set zookeeper data dir
+  file: path={{ zookeeper.configuration.data_dir }} state=directory owner=zookeeper group=zookeeper
+  tags: 
+    - zookeeper
+    - zk_configuration
+
+- name: set zookeeper configuration
+  template: src=templates/zookeeper.configuration.j2 dest={{ zk_application_path }}/conf/zoo.cfg
+  notify: restart zookeeper
+  tags: 
+    - zookeeper
+    - zk_configuration
+
+- name: set zookeeper data dir
+  file: path={{ zookeeper.configuration.data_dir }} state=directory owner=zookeeper group=zookeeper
+  tags: 
+    - zookeeper
+    - zk_configuration
+
+- name: set zookeeper myid configuration
+  template: src=templates/zookeeper.myid.j2 dest={{ zookeeper.configuration.data_dir }}/myid
+  notify: restart zookeeper
+  tags: 
+    - zookeeper
+    - zk_configuration
+
+- name: start zookeeper
+  template: src=zookeeper.systemd.j2 dest=/etc/systemd/system/zookeeper.service owner=root group=root mode=644
+  notify: start zookeeper
+  tags:
+    - zookeeper
+    - zk_startup

@@ -1,0 +1,40 @@
+package_download_path : "/tmp"
+kafka:
+  version: 0.10.0.0
+  scala_version: 2.11
+  installation_path: /etc
+  download_mirror: http://apache.rediris.es/kafka
+  configuration:
+    port: 9092
+    data_dir: /var/lib/kafka 
+    logs_data_dir: /var/lib/kafka/logs 
+    network_threads: 3
+    disk_threads: 8 
+    num_partitions: 3
+    so_snd_buff_bytes: 102400
+    so_rcv_buff_bytes: 102400
+    so_request_max_bytes: 104857600
+    data_dir_recovery_threads: 1
+    log_retention_hours: 168
+    log_retention_bytes: 1073741824
+    log_segment_bytes: 1073741824
+    log_retention_check_interval: 300000
+    log_cleaner_enable: false
+    zk_connection_timeout: 60000
+zookeeper:
+  version: 3.4.8
+  installation_path: /etc
+  download_mirror: http://apache.rediris.es/zookeeper
+  configuration:
+    port: 2181
+    data_dir: /var/lib/zookeeper
+    tick_time: 2000 
+    init_limit: 5
+    sync_limit: 2 
+java:
+  version: 8u101
+  installation_path: /usr/java/jdk1.8.0_101/
+  build: b13
+  platform: linux-x64
+  download_mirror: http://download.oracle.com/otn-pub/java/jdk
+  download_cookies: "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" 

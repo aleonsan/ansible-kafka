@@ -1,0 +1,49 @@
+- set_fact:
+    jdk_package_name: jdk-{{ java.version }}-{{ java.platform }}.rpm
+  tags: 
+    - java 
+    - java_installation
+
+- name: check java package
+  stat: path={{ package_download_path }}/{{ jdk_package_name }}
+  register: jdk_package_exists
+  tags:
+    - java 
+    - java_installation
+
+- name: download jdk package if not downloaded
+  get_url: url={{ java.download_mirror }}/{{ java.version }}-{{ java.build }}/{{ jdk_package_name }} dest={{ package_download_path }} headers={{ java.download_cookies }}
+  when: not jdk_package_exists.stat.exists 
+  tags: 
+    - java 
+    - java_installation
+
+- name: install jdk rpm
+  yum: name={{ package_download_path }}/{{ jdk_package_name }} state=installed
+  tags: 
+    - java 
+    - java_installation
+
+- name: symlink to /usr/local
+  file: state=link src={{ java.installation_path }} dest=/usr/local/java owner=root group=root
+  tags: 
+    - java 
+    - java_installation
+
+#- name: create /usr/java directory
+#  file: path={{ java.installation_path }} state=directory owner=root group=root mode=0755
+#  tags: 
+#    - java 
+#    - java_installation
+#
+#- name: unarchive java files
+#  unarchive: src={{ package_download_path }}/{{ jdk_package_name }} dest={{ java.installation_path }} copy=no 
+#  tags: 
+#    - java 
+#    - java_installation
+
+  # validate_certs=yes
+  #command: >
+  #  wget --no-cookies --no-check-certificate --header "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" {{ java.download_mirror }}/{{ java.version }}-{{ java.build }}/{{ jdk_package_name }} -O {{ package_download_path }}/{{ jdk_package_name }} 
+ 
+#headers="Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie"

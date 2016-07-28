@@ -1,0 +1,9 @@
+[kafka_servers]
+kafka1 kafka_broker_id=1
+kafka2 kafka_broker_id=2
+kafka3 kafka_broker_id=3
+
+[zk_servers]
+kafka1 zk_id=1
+kafka2 zk_id=2
+kafka3 zk_id=3

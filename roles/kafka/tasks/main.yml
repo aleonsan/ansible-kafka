@@ -1,0 +1,65 @@
+- name: disable firewalld
+  service: name=firewalld state=stopped enabled=no
+  ignore_errors: True
+  tags: 
+    - kafka 
+    - kafka_setup 
+
+- name: create kafka group 
+  user: name=kafka state=present 
+  tags: 
+    - kafka
+    - kafka_setup
+ 
+- name: create kafka user
+  user: name=kafka group=kafka
+  tags: 
+    - kafka
+    - kafka_setup
+ 
+- set_fact:
+    kafka_package_name: kafka_{{ kafka.scala_version }}-{{ kafka.version }}.tgz
+    kafka_application_path: "{{ kafka.installation_path }}/kafka_{{ kafka.scala_version }}-{{ kafka.version }}"
+  tags: 
+    - kafka
+    - kafka_installation
+
+- name: check kafka package
+  stat: path={{ package_download_path }}/{{ kafka_package_name }}
+  register: kafka_package_exists
+  tags:
+    - kafka
+    - kafka_installation
+
+- name: download kafka tar if not downloaded
+  get_url: url={{ kafka.download_mirror }}/{{ kafka.version }}/{{ kafka_package_name }} dest={{ package_download_path }}
+  when: not kafka_package_exists.stat.exists 
+  tags: 
+    - kafka
+    - kafka_installation
+
+- name: unarchive kafka package
+  unarchive: src={{ package_download_path }}/{{ kafka_package_name }} dest={{ kafka.installation_path }} copy=no 
+  tags: 
+    - kafka
+    - kafka_installation
+
+- name: set kafka data dir
+  file: path={{ kafka.configuration.data_dir }} state=directory owner=kafka group=kafka
+  tags: 
+    - kafka
+    - kafka_installation
+
+- name: set kafka configuration
+  template: src=templates/kafka.configuration.j2 dest={{ kafka_application_path }}/config/real-server.properties
+  notify: restart kafka 
+  tags: 
+    - kafka
+    - kafka_installation
+
+- name: start kafka 
+  template: src=kafka.systemd.j2 dest=/etc/systemd/system/kafka.service owner=root group=root mode=644
+  notify: start kafka 
+  tags:
+    - kafka
+    - kafka_startup

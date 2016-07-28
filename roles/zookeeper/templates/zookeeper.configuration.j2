@@ -1,0 +1,8 @@
+tickTime={{ zookeeper.configuration.tick_time }}
+dataDir={{ zookeeper.configuration.data_dir }}
+clientPort={{ zookeeper.configuration.port }}
+initLimit={{ zookeeper.configuration.init_limit }}
+syncLimit={{ zookeeper.configuration.sync_limit }}
+{% for server in groups["zk_servers"] %}
+server.{{ loop.index }}={{ server }}:2888:3888
+{% endfor %}

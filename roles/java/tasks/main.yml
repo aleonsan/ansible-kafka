@@ -25,7 +25,14 @@
     - java_installation
 
 - name: symlink to /usr/local
-  file: state=link src={{ java.installation_path }} dest=/usr/local/java owner=root group=root
+  file: state=link src={{ java.installation_path }} dest=/usr/bin/java owner=root group=root
+  tags: 
+    - java 
+    - java_installation
+
+- name: make java system alternative
+  # priority parameter its supported in Ansible > 2.2
+  alternatives: name=java path={{ java.installation_path }}/bin/java link=/usr/bin/java
   tags: 
     - java 
     - java_installation

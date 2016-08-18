@@ -36,5 +36,6 @@ java:
   installation_path: /usr/java/jdk1.8.0_101/
   build: b13
   platform: linux-x64
+  priority: 100
   download_mirror: http://download.oracle.com/otn-pub/java/jdk
   download_cookies: "Cookie: gpw_e24=http%3A%2F%2Fwww.oracle.com%2F; oraclelicense=accept-securebackup-cookie" 

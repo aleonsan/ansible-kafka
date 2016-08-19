@@ -6,7 +6,7 @@
     - kafka_setup 
 
 - name: create kafka group 
-  user: name=kafka state=present 
+  group: name=kafka state=present
   tags: 
     - kafka
     - kafka_setup

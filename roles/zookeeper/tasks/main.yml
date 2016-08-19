@@ -6,7 +6,7 @@
     - zk_setup
 
 - name: create zookeeper group 
-  user: name=zookeeper state=present 
+  group: name=zookeeper state=present
   tags: 
     - zookeeper 
     - zk_setup

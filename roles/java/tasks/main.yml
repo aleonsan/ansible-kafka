@@ -24,6 +24,13 @@
     - java 
     - java_installation
 
+- name: delete package downloaded if needed
+  file: path={{ package_download_path }}/{{ jdk_package_name }} state=absent
+  when: force_cleanup is defined and force_cleanup == "True"
+  tags:
+    - java 
+    - java_installation
+
 - name: symlink to /usr/local
   file: state=link src={{ java.installation_path }} dest=/usr/bin/java owner=root group=root
   tags: 

@@ -44,6 +44,13 @@
     - kafka
     - kafka_installation
 
+- name: delete package downloaded if needed
+  file: path={{ package_download_path }}/{{ kafka_package_name }} state=absent
+  when: force_cleanup is defined and force_cleanup == "True"
+  tags:
+    - kafka
+    - kafka_installation
+
 - name: set kafka data dir
   file: path={{ kafka.configuration.data_dir }} state=directory owner=kafka group=kafka
   tags: 

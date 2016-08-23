@@ -44,6 +44,13 @@
     - zookeeper
     - zk_installation
 
+- name: delete package downloaded if needed
+  file: path={{ package_download_path }}/{{ zk_package_name }} state=absent
+  when: force_cleanup is defined and force_cleanup == "True"
+  tags:
+    - zookeeper
+    - zk_installation
+
 - name: set zookeeper data dir
   file: path={{ zookeeper.configuration.data_dir }} state=directory owner=zookeeper group=zookeeper
   tags: 

@@ -33,7 +33,7 @@ zookeeper:
     sync_limit: 2 
 java:
   version: 8u101
-  installation_path: /usr/java/jdk1.8.0_101/
+  installation_path: /usr/java/jdk1.8.0_101
   build: b13
   platform: linux-x64
   priority: 100

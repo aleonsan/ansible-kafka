@@ -20,6 +20,7 @@ kafka:
     log_segment_bytes: 1073741824
     log_retention_check_interval: 300000
     log_cleaner_enable: false
+    log_path: /var/log/
     zk_connection_timeout: 60000
 zookeeper:
   version: 3.4.8
@@ -27,6 +28,7 @@ zookeeper:
   download_mirror: http://apache.rediris.es/zookeeper
   configuration:
     port: 2181
+    log_path: /var/log/
     data_dir: /var/lib/zookeeper
     tick_time: 2000 
     init_limit: 5

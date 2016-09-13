@@ -51,7 +51,7 @@
     - zk_configuration
 
 - name: set zookeeper configuration
-  template: src=templates/zookeeper.configuration.j2 dest={{ zk_application_path }}/conf/zoo.cfg
+  template: src=templates/zookeeper.configuration.j2 dest={{ zk_application_path }}/conf/zoo.cfg force=yes
   notify: restart zookeeper
   tags: 
     - zookeeper
@@ -64,14 +64,14 @@
     - zk_configuration
 
 - name: set zookeeper myid configuration
-  template: src=templates/zookeeper.myid.j2 dest={{ zookeeper.configuration.data_dir }}/myid
+  template: src=templates/zookeeper.myid.j2 dest={{ zookeeper.configuration.data_dir }}/myid force=yes
   notify: restart zookeeper
   tags: 
     - zookeeper
     - zk_configuration
 
 - name: start zookeeper
-  template: src=zookeeper.systemd.j2 dest=/etc/systemd/system/zookeeper.service owner=root group=root mode=644
+  template: src=zookeeper.systemd.j2 dest=/etc/systemd/system/zookeeper.service owner=root group=root mode=644 force=yes
   tags:
     - zookeeper
     - zk_startup

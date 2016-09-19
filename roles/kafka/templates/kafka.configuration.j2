@@ -55,7 +55,7 @@ socket.request.max.bytes={{ kafka.configuration.so_request_max_bytes }}
 ############################# Log Basics #############################
 
 # A comma seperated list of directories under which to store log files
-log.dirs={{ kafka.configuration.logs_data_dir }}
+log.dirs={{ kafka.configuration.log_dirs }}
 
 # The default number of log partitions per topic. More partitions allow greater
 # parallelism for consumption, but this will also result in more files across

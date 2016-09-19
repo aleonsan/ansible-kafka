@@ -7,7 +7,8 @@ kafka:
   configuration:
     port: 9092
     data_dir: /var/lib/kafka 
-    logs_data_dir: /var/lib/kafka/logs 
+    log_dirs: /tmp/kafka-logs
+    log_path: /var/log/kafka
     network_threads: 3
     disk_threads: 8 
     num_partitions: 3
@@ -20,7 +21,6 @@ kafka:
     log_segment_bytes: 1073741824
     log_retention_check_interval: 300000
     log_cleaner_enable: false
-    log_path: /var/log/
     zk_connection_timeout: 60000
 zookeeper:
   version: 3.4.8
@@ -28,7 +28,7 @@ zookeeper:
   download_mirror: http://apache.rediris.es/zookeeper
   configuration:
     port: 2181
-    log_path: /var/log/
+    log_path: /var/log/zookeeper
     data_dir: /var/lib/zookeeper
     tick_time: 2000 
     init_limit: 5

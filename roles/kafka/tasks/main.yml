@@ -50,8 +50,20 @@
     - kafka
     - kafka_installation
 
+- name: set kafka loggers dir
+  file: path={{ kafka.configuration.log_path }} state=directory owner=kafka group=kafka
+  tags:
+    - kafka
+    - kafka_installation
+
+- name: set kafka log topic dirs
+  file: path={{ kafka.configuration.log_dirs }} state=directory owner=kafka group=kafka
+  tags:
+    - kafka
+    - kafka_installation
+
 - name: set kafka configuration
-  template: src=templates/kafka.configuration.j2 dest={{ kafka_application_path }}/config/real-server.properties force=yes
+  template: src=templates/kafka.configuration.j2 dest={{ kafka_application_path }}/config/server.properties force=yes
   notify: restart kafka 
   tags: 
     - kafka

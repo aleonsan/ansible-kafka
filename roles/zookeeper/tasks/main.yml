@@ -50,6 +50,12 @@
     - zookeeper
     - zk_configuration
 
+- name: set zookeeper log dir
+  file: path={{ zookeeper.configuration.log_path }} state=directory owner=zookeeper group=zookeeper
+  tags:
+    - zookeeper
+    - zk_configuration
+
 - name: set zookeeper configuration
   template: src=templates/zookeeper.configuration.j2 dest={{ zk_application_path }}/conf/zoo.cfg force=yes
   notify: restart zookeeper

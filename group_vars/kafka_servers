@@ -7,7 +7,7 @@ kafka:
   configuration:
     port: 9092
     data_dir: /var/lib/kafka 
-    log_dirs: /tmp/kafka-logs
+    log_dirs: /tmp/lib/kafka/kafka-logs
     log_path: /var/log/kafka
     network_threads: 3
     disk_threads: 8 
@@ -16,7 +16,7 @@ kafka:
     so_rcv_buff_bytes: 102400
     so_request_max_bytes: 104857600
     data_dir_recovery_threads: 1
-    log_retention_hours: 168
+    log_retention_hours: 24 
     log_retention_bytes: 1073741824
     log_segment_bytes: 1073741824
     log_retention_check_interval: 300000

@@ -25,7 +25,7 @@ broker.id={{ kafka_broker_id }}
 port={{ kafka.configuration.port }}
 
 # Hostname the broker will bind to. If not set, the server will bind to all interfaces
-#host.name=localhost
+host.name={{ ansible_hostname }}
 
 # Hostname the broker will advertise to producers and consumers. If not set, it uses the
 # value for "host.name" if configured.  Otherwise, it will use the value returned from
@@ -115,7 +115,7 @@ log.cleaner.enable={{ kafka.configuration.log_cleaner_enable }}
 # server. e.g. "127.0.0.1:3000,127.0.0.1:3001,127.0.0.1:3002".
 # You can also append an optional chroot string to the urls to specify the
 # root directory for all kafka znodes.
-zookeeper.connect={{ groups["zk_servers"] | join(":{0}/kafka,".format(zookeeper.configuration.port )) }}:{{ zookeeper.configuration.port }}
+zookeeper.connect={{ groups["zk_servers"] | join(":{0},".format(zookeeper.configuration.port )) }}:{{ zookeeper.configuration.port }}/kafka
 
 # Timeout in ms for connecting to zookeeper
 zookeeper.connection.timeout.ms={{ kafka.configuration.zk_connection_timeout }}
